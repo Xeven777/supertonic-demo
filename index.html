@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supertonic - AI Voice Synthesis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Electrolize&family=TASA+Orbiter:wght@400..800&display=swap"
+        rel="stylesheet">
+    <!-- Preload ONNX models for faster loading -->
+    <link rel="preload" href="/assets/onnx/duration_predictor.onnx" as="fetch" crossorigin>
+    <link rel="preload" href="/assets/onnx/text_encoder.onnx" as="fetch" crossorigin>
+    <link rel="preload" href="/assets/onnx/vector_estimator.onnx" as="fetch" crossorigin>
+    <link rel="preload" href="/assets/onnx/vocoder.onnx" as="fetch" crossorigin>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+            </div>
+            <h1 class="">Supertonic</h1>
+            <div class="header-controls">
+                <div id="backendBadge" class="badge badge-neutral">
+                    <span class="badge-dot"></span>
+                    Initializing...
+                </div>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <aside class="sidebar">
+                <div class="card control-panel">
+                    <div class="section-header">
+                        <h2>Voice Settings</h2>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="voiceStyleSelect">Voice Model</label>
+                        <div class="select-wrapper">
+                            <select id="voiceStyleSelect">
+                                <option value="assets/voice_styles/M1.json">Male 1 (M1)</option>
+                                <option value="assets/voice_styles/M2.json">Male 2 (M2)</option>
+                                <option value="assets/voice_styles/F1.json">Female 1 (F1)</option>
+                                <option value="assets/voice_styles/F2.json">Female 2 (F2)</option>
+                            </select>
+                        </div>
+                        <small id="voiceStyleInfo" class="text-muted">Loading voice info...</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="totalStep">Quality (Steps)</label>
+                        <div class="range-control">
+                            <input type="range" id="totalStep" value="5" min="1" max="50" class="slider">
+                            <span class="range-value" id="totalStepValue">5</span>
+                        </div>
+                        <small class="text-muted">Higher = better quality, slower</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="speed">Speed</label>
+                        <div class="range-control">
+                            <input type="range" id="speed" value="1.05" min="0.5" max="2.0" step="0.05" class="slider">
+                            <span class="range-value" id="speedValue">1.05x</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="statusBox" class="status-card">
+                    <div class="status-icon">⏳</div>
+                    <div id="statusText">Initializing system...</div>
+                    <div id="progressContainer" class="progress-container hidden">
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span id="progressStep">Step 0/0</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="content-area">
+                <div class="card input-card">
+                    <div class="section-header">
+                        <h2>Text to Speech</h2>
+                    </div>
+                    <div class="textarea-wrapper">
+                        <textarea id="text"
+                            placeholder="Enter text to convert to speech...">This morning, I took a walk in the park, and the sound of the birds and the breeze was so pleasant that I stopped for a long time just to listen.</textarea>
+                        <div class="char-count"><span id="charCount">0</span> characters</div>
+                    </div>
+                    <div class="action-bar">
+                        <button id="generateBtn" class="btn btn-primary" disabled>
+                            <span class="btn-text">Generate Speech</span>
+                        </button>
+                    </div>
+                    <div id="error" class="error-message"></div>
+                </div>
+
+                <div class="card results-card">
+                    <div class="section-header">
+                        <h2>Generated Audio</h2>
+                    </div>
+                    <div id="results" class="results-container">
+                        <div class="empty-state">
+                            <div class="empty-icon">🎙️</div>
+                            <p>Your generated audio will appear here</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
