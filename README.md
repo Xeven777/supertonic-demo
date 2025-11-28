@@ -2,6 +2,8 @@
 
 This example demonstrates how to use Supertonic in a web browser using ONNX Runtime Web.
 
+![screenshot](ss.png)
+
 ## Features
 
 - 🌐 Runs entirely in the browser (no server required for inference)

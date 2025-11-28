@@ -14,12 +14,12 @@
     "speech-synthesis",
     "web"
   ],
-  "author": "",
   "license": "MIT",
   "dependencies": {
     "onnxruntime-web": "^1.23.2"
   },
   "devDependencies": {
+    "terser": "^5.44.1",
     "vite": "^7.2.4"
   }
 }
